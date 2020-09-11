@@ -1,0 +1,469 @@
+#Rafael Santos
+
+import requests
+import argparse
+import threading
+import os
+import sys
+import urllib3
+import time
+import queue
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+parser = argparse.ArgumentParser(description="MyRecon")
+parser.add_argument("target", help="Will be your target, it can be a file containing the header, or an URL")
+parser.add_argument("wordlist", help="Wordlist path")
+parser.add_argument("-t", dest="threadsNumber", default=3, help="Number of threads to use")
+parser.add_argument("-f", dest="filter", default="404", help="Do not print listed code(s)")
+parser.add_argument("-k", dest="Key", default="^", help="Key to replace: ^string_to_replace^")
+parser.add_argument("-lf", dest="lenghtFilter", default="", help="Do not print passed length responses")
+parser.add_argument("-e", dest="wordlistExtension", default="", help="Add a extension to the passed wordlist: e.g: -e \".txt\"")
+parser.add_argument("-sleep", dest="sleepAfter", default="0", help="Sleep before eatch request")
+args = parser.parse_args()
+
+defaultKey = args.Key
+filter = str(args.filter)
+headerName = args.target
+wordlistName = args.wordlist
+numberOfThreads = int(args.threadsNumber)
+lengthFilter = args.lenghtFilter
+extension = args.wordlistExtension
+fromProgressBar = "from_progress_bar"
+sleepAfter = float(args.sleepAfter)
+isSleeping = False
+
+if sleepAfter != 0:
+    isSleeping = True
+
+if numberOfThreads < 1:
+    print("Use at least 1 thread")
+    exit(0)
+
+class ThreadSettings():
+    stop = False
+    messages = queue.Queue()
+
+class ProgressBar():
+    progress = 0
+    requestsMade = 0
+
+class ScanUtils():
+    #TODO
+    pass
+
+def checkProgressBar():
+    ProgressBar.requestsMade += 1
+    percent = int(round(100 / (float(wordlistLength)/float(ProgressBar.requestsMade))))
+    if percent > ProgressBar.progress:
+        ProgressBar.progress += 1
+        ThreadSettings.messages.put(fromProgressBar)
+
+def readFile(name):
+    try:
+        file = open(name, "r", encoding="latin-1")
+        data = file.readlines()
+        file.close()
+
+        return data
+    except Exception as error:
+        exception("readFile()" + str(error))
+        exit(0)
+
+def printProgressbar():
+    progress = int(ProgressBar.progress/4.5)
+    sys.stdout.flush()
+    sys.stdout.write("[")
+    sys.stdout.write(str(ProgressBar.progress) + "%")
+    sys.stdout.write("]")
+    sys.stdout.write("[")
+    sys.stdout.write(str(ProgressBar.requestsMade) + "/" + str(wordlistLength))
+    sys.stdout.write("]")
+    sys.stdout.write(" {")
+    for i in range(0, progress):
+        sys.stdout.write("\033[92m")
+        sys.stdout.write("█")
+        sys.stdout.write("\033[0m")
+    for i in range(progress, 21):
+        sys.stdout.write(" ")
+    sys.stdout.write("}\r")
+
+def printReq():
+    try:
+        while True:
+            if ThreadSettings.stop:
+                exit(0)
+
+            message = ThreadSettings.messages.get()
+            if message == fromProgressBar:
+                printProgressbar()
+            elif message == "exit":
+                exit(0)
+            else:
+                req = message.split("|")
+                code = req[0]
+                responseLength = req[1]
+                word = req[2]
+
+                if lengthFilter == responseLength:
+                    sys.stdout.flush()
+                    printProgressbar()
+                elif code not in filter:
+
+                    if len(responseLength) >= 14:
+                        pass
+                    else:
+                        aux = responseLength
+                        for i in range(len(aux), 15):
+                            responseLength += " "
+
+                    if str(code).startswith("3"):
+                        print("=> \33[93m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                    elif str(code).startswith("4"):
+                        print("=> \33[91m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                    elif str(code).startswith("2"):
+                        print("=> \033[92m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                    elif str(code).startswith("1"):
+                        print("=> \033[94m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                    else:
+                        print("=> \33[91m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+
+                sys.stdout.flush()
+                printProgressbar()
+    except Exception as error:
+        exception("printReq() " + str(error))
+
+def preparePrinting(req, word):
+    try:
+        if req != None:
+            code = str(req.status_code)
+            length = str(len(req.text))
+
+            messageToPrint = code + "|" + length + "|" + word
+
+            ThreadSettings.messages.put(messageToPrint)
+    except Exception as error:
+        exception("preparePrinting() " + str(error))
+
+def makeUrlRequest(url, word):
+    try:
+        req = requests.get(url, verify=False, allow_redirects=False, timeout=10)
+        preparePrinting(req, word)
+        checkProgressBar()
+        if isSleeping:
+            time.sleep(sleepAfter)
+    except Exception as error:
+        checkProgressBar()
+    except KeyboardInterrupt:
+        exit(0)
+
+def makeHeaderRequest(url, header, method, wolrd):
+    try:
+        method = method.lower()
+        if method == "post":
+            req = requests.post(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        elif method == "get":
+            req = requests.get(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        elif method == "put":
+            req = requests.put(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        elif method == "delete":
+            req = requests.delete(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        elif method == "head":
+            req = requests.head(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        elif method == "options":
+            req = requests.options(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        elif method == "patch":
+            req = requests.patch(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+        else:
+            exception("Method not implemented")
+        preparePrinting(req, wolrd)
+        checkProgressBar()
+        if isSleeping:
+            time.sleep(sleepAfter)
+    except Exception as error:
+        checkProgressBar()
+    except KeyboardInterrupt:
+        exit(0)
+
+def makeBodyRequest(url, header, body, method, word):
+    try:
+        method = method.lower()
+        if method == "post":
+            req = requests.post(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        elif method == "get":
+            req = requests.get(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        elif method == "put":
+            req = requests.put(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        elif method == "delete":
+            req = requests.delete(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        elif method == "head":
+            req = requests.head(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        elif method == "options":
+            req = requests.options(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        elif method == "patch":
+            req = requests.patch(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+        else:
+            exception("Method not implemented")
+
+        preparePrinting(req, word)
+        checkProgressBar()
+        if isSleeping:
+            time.sleep(sleepAfter)
+    except Exception as error:
+        checkProgressBar()
+        #print("ERROR | " + word + " | Error: " + str(error))
+    except KeyboardInterrupt:
+        exit(0)
+
+def replaceKey(line, keyToReplace):
+    parts = line.split(defaultKey)
+    aux = ""
+    for i in range(0, len(parts)):
+        if i%2 != 0:
+           aux += keyToReplace
+        else:
+            aux += parts[i]
+
+    return aux
+
+def exception(menssage):
+    menssage = str(menssage)
+    print(menssage)
+    exit(0)
+
+def methodIsValid(method):
+    try:
+        methodList = ["get", "post", "head", "put", "delete", "options", "patch"]
+        method = method.lower()
+
+        for mt in methodList:
+            if mt == method:
+                return True
+
+        return False
+    except Exception as error:
+        exception("methodIsValid() " + str(error))
+
+def alignHttpHeader(header):
+    try:
+        path = ""
+        host = ""
+        method = ""
+        finalHeader = {}
+        body = {}
+        inBody = False
+        auxBody = ""
+        hasBody = False
+        
+        for i in range(0, len(header)):
+            line = header[i]
+            if i == 0:
+                if (len(line) < 2):
+                    exception("alignHttpHeader() Invalid Header")
+
+                lineParts = line.split(" ")
+                if len(lineParts) != 3:
+                    exception("alignHttpHeader() Invalid header")
+
+                method = lineParts[0]
+                path = lineParts [1]
+
+                if not methodIsValid(method):
+                    exception("alignHttpHeader() Method: " + method + " is not implemented")
+
+                continue
+
+            if (line.replace("\n", "") == "") and (not inBody):
+                inBody = True
+                continue
+
+            if not inBody:
+                line = line.replace("\n", "")
+                headerParts = line.split(": ")
+                if len(headerParts) != 2:
+                    if len(headerParts) == 1:
+                        headerParts.append("")
+                    else:
+                        aux = ""
+                        for i in range(1, len(headerParts)-1):
+                            aux += headerParts[i]
+                            headerParts.remove(headerParts[i])
+                        headerParts.append(aux)
+
+                if "Host" == headerParts[0]:
+                    host = headerParts[1]
+
+                finalHeader.update({headerParts[0]:headerParts[1]})
+
+            else:
+                auxBody += line
+
+        if len(auxBody.replace(" ", "")) != 0:
+            hasBody = True
+            body.update({"":auxBody})
+
+        return finalHeader, body, method, path, host, hasBody
+    except Exception as error:
+        exception("alignHttpHeader() " + str(error))
+
+def changeRequestToPassedWordlist(header, body, path, host, word, hasBody):
+    try:
+        finalHeader = {}
+        finalBody = {}
+
+        for key, value in header.items():
+            finalHeader.update({replaceKey(key, word): replaceKey(value, word)})
+
+        if hasBody:
+            for key, value in body.items():
+                finalBody.update({replaceKey(key, word): replaceKey(value, word)})
+
+        finalHost = replaceKey(host, word)
+        finalPath = replaceKey(path, word)
+
+        return finalHeader, finalBody, finalHost, finalPath
+    except Exception as error:
+        exception("alignRequest() " + str(error))
+
+def estimeTime(url, requestPerLoop):
+    try:
+        url = url.replace("^", "")
+        start_time = time.time()
+        requests.get(url, verify=False, allow_redirects=False)
+        estimatedTime = (time.time() - start_time)*requestPerLoop
+
+        return estimatedTime
+    except Exception as error:
+        exception("estimateTime() Invalid host " + str(error))
+
+def prepareAndMakeRequest(header, body, host, path, method, wolrd, hasBody):
+    try:
+        url = "https://" + host + path
+        if hasBody:
+            body = body['']
+            makeBodyRequest(url, header, body, method, wolrd)
+        else:
+            makeHeaderRequest(url, header, method, wolrd)
+
+    except Exception as error:
+        exception("prepareAndMakeRequest() " + str(error))
+
+def headerAttack(ini, end):
+    try:
+        for i in range(ini, end):
+            if ThreadSettings.stop:
+                break
+            word = wordlist[i]
+            header = readFile(headerName)
+            alignedHeader, body, method, path, host, hasBody = alignHttpHeader(header)
+            finalHeader, finalBody, finalHost, finalPath = changeRequestToPassedWordlist(alignedHeader, body, path, host, word, hasBody)
+            prepareAndMakeRequest(finalHeader, finalBody, finalHost, finalPath, method, word, hasBody)
+
+    except Exception as error:
+        exception("headerAttack() " + str(error))
+
+def urlattack(ini, end):
+    try:
+        for i in range(ini, end):
+            if ThreadSettings.stop:
+                break
+            word = wordlist[i]
+            url = replaceKey(headerName, word)
+            makeUrlRequest(url, word)
+    except Exception as error:
+        exception("urlAttack() " + str(error))
+
+def runThreads(function):
+    try:
+        threads = []
+        dWordlist = int(wordlistLength/numberOfThreads)
+        ini = 0
+        end = dWordlist
+
+        printReqThread = threading.Thread(target=printReq)
+        printReqThread.start()
+
+        if numberOfThreads == 1:
+            thread = threading.Thread(target=function, args=[0, wordlistLength])
+            threads.append(thread)
+
+        else:
+            threadToRun = threading.Thread(target=function, args=[ini, end])
+            threads.append(threadToRun)
+
+            for i in range(0, numberOfThreads-1):
+                ini = ini + dWordlist
+                end = end + dWordlist
+
+                threadToRun = threading.Thread(target=function, args=[ini, end])
+                threads.append(threadToRun)
+
+            if end < wordlistLength:
+                finalThreadToRun = threading.Thread(target=function, args=[end, wordlistLength])
+                threads.append(finalThreadToRun)
+
+        for thread in threads:
+            thread.start()
+    except Exception as error:
+        exception("runThreads() " + str(error))
+
+def getUrl():
+    data = readFile(headerName)
+    for line in data:
+        line = line.replace("\n", "")
+        if "Host: " in line:
+            parts = line.split(": ")
+            if len(parts) != 1:
+                return parts[1]
+            else:
+                return "Could not calculate"
+    return "Could not calculate"
+
+def main():
+    try:
+        requestPerLoop = wordlistLength/numberOfThreads
+        print("[*] Starting Bruteforcer [*]\n")
+        print("[*] WordList length: " + str(wordlistLength))
+        print("[*] Threads: " + str(numberOfThreads))
+        print("[*] Filter set to do not print [" + str(filter) + "] codes")
+        print("[*] Requests per loop: " + str(int(requestPerLoop)))
+
+        if os.path.isfile(headerName):
+            url = getUrl()
+            print("[*] Target: " + url)
+
+            if "." not in url:
+                exception("Main() Invalid target")
+
+            print("[*] Starting header attack\n")
+            runThreads(headerAttack)
+
+        else:
+            print("[*] Host: " + headerName)
+            print("[*] Starting url attack\n")
+            runThreads(urlattack)
+
+        try:
+            while True:
+                time.sleep(2)
+                if str(threading.active_count()) == "2":
+                    ThreadSettings.messages.put("exit")
+                    exit(0)
+        except KeyboardInterrupt:
+            print("\n[*] Stopping threads ...")
+            ThreadSettings.stop = True
+            ThreadSettings.messages.put("exit")
+            exit(0)
+
+    except Exception as error:
+        exception("main() " + str(error))
+
+wordlist = []
+data = readFile(wordlistName)
+
+for line in data:
+    wordlist.append(line.replace("\n", "") + extension)
+
+wordlistLength = len(wordlist)
+
+main()
