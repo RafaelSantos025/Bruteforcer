@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#Rafael Santos
+
 import requests
 import argparse
 import threading
@@ -19,7 +23,8 @@ parser.add_argument("-lf", dest="lenghtFilter", default="", help="Ignore passed 
 parser.add_argument("-r", dest="recursive", action="store_true", help="Use recursive mode")
 parser.add_argument("-rc", dest="recursiveCodes", default="200", help="Only release recursive wordlist to this codes")
 parser.add_argument("-rs", dest="recursiveSeparator", default="/", help="Use an arbitrary character separator when using the recursive mode")
-parser.add_argument("-e", dest="wordlistExtension", default="", help="Add a extension to the passed wordlist: e.g: -e \".txt\"")
+parser.add_argument("-e", dest="wordlistExtension", default="", help="Add a extension to the passed wordlist. e.g: -e \".txt\"")
+parser.add_argument("-proxy", dest="proxy", default="", help="Proxy the requests. Burp Proxy example: -proxy \"localhost:8080\"")
 parser.add_argument("-sleep", dest="sleepAfter", default="0", help="Sleep before eatch request")
 args = parser.parse_args()
 
@@ -32,18 +37,28 @@ lengthFilter = args.lenghtFilter
 extension = args.wordlistExtension
 fromProgressBar = "from_progress_bar"
 sleepAfter = float(args.sleepAfter)
-isSleeping = False
 recursiveCodes = args.recursiveCodes
 recursiveSeparator = args.recursiveSeparator
 recursive = args.recursive
-proxy = {"127.0.0.1":"8080"} #TODO BurpProxy
+proxy = args.proxy
 
-if sleepAfter != 0:
-    isSleeping = True
+def checkArguments():
+    if sleepAfter < 0:
+        print("Invalid Sleeping time")
+        exit(0)
 
-if (numberOfThreads < 1) or (numberOfThreads > 1000):
-    print("Invalid threads number, choose between 1 - 1000")
-    exit(0)
+    if sleepAfter != 0:
+        ScanUtils.isSleeping = True
+
+    if (numberOfThreads < 1) or (numberOfThreads > 1000):
+        print("Invalid threads number, choose between 1 - 1000")
+        exit(0)
+
+    if proxy != "":
+        finalProxy = {"https": proxy,
+                      "http": proxy}
+
+        ScanUtils.proxy = finalProxy
 
 class ThreadSettings():
     stop = False
@@ -60,6 +75,8 @@ class ScanUtils():
     wordlist = []
     recursiveWordlist = []
     attackType = None
+    isSleeping = False
+    proxy = {}
 
 def checkProgressBar():
     ProgressBar.requestsMade += 1
@@ -158,10 +175,10 @@ def preparePrinting(req, word):
 
 def makeUrlRequest(url, word):
     try:
-        req = requests.get(url, verify=False, allow_redirects=False, timeout=10)
+        req = requests.get(url, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         preparePrinting(req, word)
         checkProgressBar()
-        if isSleeping:
+        if ScanUtils.isSleeping:
             time.sleep(sleepAfter)
     except Exception as error:
         checkProgressBar()
@@ -172,24 +189,24 @@ def makeHeaderRequest(url, header, method, wolrd):
     try:
         method = method.lower()
         if method == "post":
-            req = requests.post(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.post(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "get":
-            req = requests.get(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.get(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "put":
-            req = requests.put(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.put(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "delete":
-            req = requests.delete(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.delete(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "head":
-            req = requests.head(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.head(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "options":
-            req = requests.options(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.options(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "patch":
-            req = requests.patch(url, headers=header, verify=False, allow_redirects=False, timeout=10)
+            req = requests.patch(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         else:
             exception("Method not implemented")
         preparePrinting(req, wolrd)
         checkProgressBar()
-        if isSleeping:
+        if ScanUtils.isSleeping:
             time.sleep(sleepAfter)
     except Exception as error:
         checkProgressBar()
@@ -200,25 +217,25 @@ def makeBodyRequest(url, header, body, method, word):
     try:
         method = method.lower()
         if method == "post":
-            req = requests.post(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.post(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "get":
-            req = requests.get(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.get(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "put":
-            req = requests.put(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.put(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "delete":
-            req = requests.delete(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.delete(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "head":
-            req = requests.head(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.head(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "options":
-            req = requests.options(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.options(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         elif method == "patch":
-            req = requests.patch(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10)
+            req = requests.patch(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
         else:
             exception("Method not implemented")
 
         preparePrinting(req, word)
         checkProgressBar()
-        if isSleeping:
+        if ScanUtils.isSleeping:
             time.sleep(sleepAfter)
     except Exception as error:
         checkProgressBar()
@@ -476,6 +493,7 @@ def generateBaseWordlist():
 
 def main():
     try:
+        checkArguments()
         generateBaseWordlist()
         requestPerLoop = ScanUtils.wordlistLength/numberOfThreads
 
