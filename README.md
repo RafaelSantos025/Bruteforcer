@@ -31,9 +31,13 @@ You can pass an file with the desired raw request or an URL
 
 <i>Like Intruder, the advanted is to replace any string with the desired wordlist</i>
 
-<b>Passing an URL: </b> The exmaple bellow will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
+
+<b>Passing an URL: </b> 
+
+The exmaple bellow will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
 
 ```./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt```
+
 
 <b>Passing an request file: </b>
 
@@ -70,6 +74,7 @@ Content-Lenght: 3
 
 {}
 ```
+
 
 <b>Replacing Headers: </b>
 
@@ -114,6 +119,7 @@ Content-Type: ^application/json^
 Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 ```
 
+
 <b>Replacing Body: </b>
 
 * The request below setup an automatic XSS attack against a blog comment post:
@@ -147,6 +153,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 {"^^":"Test", "^^":true}
 ```
+
 
 <b>Multi Strings Replacing: </b>
 
