@@ -73,7 +73,7 @@ Content-Lenght: 3
 
 <b>Replacing Headers: </b>
 
-* The followinng request will tri to bruteforce some boolean cookie (e.g: <i>isAdmin=true</i>):
+* The followinng request will try to bruteforce some boolean cookie (e.g: <i>isAdmin=true</i>):
 
 ```
 GET /api/ HTTP/1.1
