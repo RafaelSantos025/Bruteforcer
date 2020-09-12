@@ -5,7 +5,9 @@ It's a <b>Free</b> option to Burp Suite Professional Intruder.
 
 # Setup
 
-```git clone ...```
+```git clone https://github.com/RafaelSantos025/Bruteforcer.git```
+
+```chmod +x bruteforcer```
 
 ### Used Python Libs
 
