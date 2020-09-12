@@ -189,15 +189,41 @@ So I developed Bruteforcer to support <b>1000</b> threads!
 
 The following example will setup 200 threads:
 
-```./bruteforcer [file/url] [wordlist] -t 200```
+```./bruteforcer [file/url] [wordlist] -t [threads]```
 
 ```./bruteforcer "https://www.example.com/^^" wordlist.txt -t 200```
 
+The default value is 3.
+
 This feature makes a huge difference...
 
-### Recursive Mode
-
 ### Printing Filters
+Every code can be returned when bruteforcing APIS, Headers, Variables, or Body Contents, and during the Recon process, depending on the target, some of them can be unnecessary or annoying.
+
+With Bruteforcer you can filter these response codes or response lengths.
+
+<b>Usage: </b>
+
+* Response Code Filter
+
+The following command will filter the 301 and 404 codes (it means that all the passed codes will be ignored).
+
+```./bruteforcer [file/url] [wordlist] -f [codes]```
+
+```./bruteforcer request.txt wordlist.txt -f "301,404"```
+
+The default value is the 404 code.
+
+To print all the response codes you can pass an empty string, command bellow:
+
+```./bruteforcer request.txt wordlist.txt -f ""```
+
+* Response Lenght Filter
+
+
+The default value to response code filter is "404", and the length filter default value is "", it means that all the response lengths will be printed.
+
+### Recursive Mode
 
 ### Wordlist Extention
 
