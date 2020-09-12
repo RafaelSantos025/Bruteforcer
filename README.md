@@ -27,9 +27,9 @@ queue
 # How to use
 
 ### Basic usage: 
-You can pass an file with the desired raw request or an URL
+You can pass an file with the desired raw request or an URL, these commands are mandatory.
 
-```./bruteforcer [File path/URL] wordlist```
+```./bruteforcer [file-path/url] [wordlist]```
 
 <b>Key to replace: </b>
 
@@ -45,6 +45,8 @@ You can pass an file with the desired raw request or an URL
 * The following command will bruteforce some hidden URL parameters in the target:
 
     ```./bruteforcer "https://www.example.com/create?^^=true" wordlist.txt```
+
+Note that when passing URLs as a parameter, the only request method that the program can perform is the GET method.
 
 
 <b>Passing an request file: </b>
@@ -265,9 +267,9 @@ To show all the response codes you need to pass an empty string to the filter pa
 
 # Recommended Wordlists
 
-* fuzzdb
-* dirb
-* apiwordlists
+* <b>Fuzzdb</b>: https://github.com/fuzzdb-project/fuzzdb
+* <b>Dirb</b>: https://github.com/v0re/dirb
+* <b>api_wordlist</b>: https://github.com/chrislockard/api_wordlist
 
 # Limitations
 
