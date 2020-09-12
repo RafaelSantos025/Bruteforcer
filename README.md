@@ -313,4 +313,19 @@ GET, POST, HEAD, PUT, DELETE, OPTIONS, PATCH
 Using a different method than the listed above, the program will return an "<i>Not implemented method</i>" error.
 All the methods will be implemented in a near future.
 
+### Replacing Methods
+For this release, it's not possible to bruteforce HTTP Methods.
+
+Passing a request file like the following will return a ```Method: ^GET^ is not implemented``` error
+
+```
+GET / HTTP/1.1
+Connection: close
+Accept: */*
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
+Host: example.com
+Content-Type: application/json
+```
+
 <b>All the limitations will be fixed soon.</b>
