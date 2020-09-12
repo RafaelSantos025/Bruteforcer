@@ -178,6 +178,20 @@ Bruteforcer accepts almost all Content-Types and Body Structures when replacing 
 ```./bruteforcer -h```
 
 ### Using Threads
+The most impacting difference between the Burp Intruder Pro, and the Burp Intruder Community is the threads that you can use. The Community version is only allowed to use 1 thread, and it makes the attack really slow ..., consuming a lot of my time waiting for Intruder to discover a new API or path from the target.
+
+So I developed Bruteforcer to support <b>1000</b> threads!
+
+
+<b>Usage:</b>
+
+The following example will setup 200 threads:
+
+```./bruteforcer [file/url] [wordlist] -t 200```
+
+```./bruteforcer "https://www.example.com/^^" wordlist.txt -t 200```
+
+This feature makes a huge difference...
 
 ### Recursive Mode
 
