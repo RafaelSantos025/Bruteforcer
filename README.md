@@ -7,6 +7,8 @@ It's a <b>Free</b> option to Burp Suite Professional Intruder.
 
 ```git clone https://github.com/RafaelSantos025/Bruteforcer.git```
 
+```cd Bruteforcer/```
+
 ```chmod +x bruteforcer```
 
 ### Used Python Libs
