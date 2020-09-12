@@ -202,6 +202,37 @@ Bruteforcer accepts almost all Content-Types and Body Structures when replacing 
 
 ```./bruteforcer -h```
 
+```
+usage: bruteforcer [-h] [-t THREADSNUMBER] [-f FILTER] [-k KEY]
+                   [-lf LENGHTFILTER] [-r] [-rc RECURSIVECODES]
+                   [-rs RECURSIVESEPARATOR] [-e WORDLISTEXTENSION]
+                   [-proxy PROXY] [-sleep SLEEPAFTER]
+                   target wordlist
+
+Bruteforcer: Advanced Header Wordlist Bruteforce Tool.
+
+positional arguments:
+  target                Will be your target, it can be a file containing the
+                        header, or an URL
+  wordlist              Wordlist path
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t THREADSNUMBER      Number of threads to use
+  -f FILTER             Ignore listed code(s)
+  -k KEY                Key to replace: ^string_to_replace^
+  -lf LENGHTFILTER      Ignore passed length responses
+  -r                    Use recursive mode
+  -rc RECURSIVECODES    Only release recursive wordlist to this codes
+  -rs RECURSIVESEPARATOR
+                        Use an arbitrary character separator when using the
+                        recursive mode
+  -e WORDLISTEXTENSION  Add a extension to the passed wordlist. e.g: -e ".txt"
+  -proxy PROXY          Proxy the requests. Burp Proxy example: -proxy
+                        "localhost:8080"
+  -sleep SLEEPAFTER     Sleep before eatch request
+```
+
 ### Using Threads
 The most impacting difference between the Burp Intruder Pro, and the Burp Intruder Community is the threads that you can use. The Community version is only allowed to use 1 thread, and it makes the attack really slow ..., consuming a lot of my time waiting for Intruder to discover a new API or path from the target.
 
