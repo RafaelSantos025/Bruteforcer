@@ -7,7 +7,7 @@ It's a <b>Free</b> option to Burp Suite Professional Intruder.
 
 ```git clone ...```
 
-#### Used Python Libs
+### Used Python Libs
 
 ```
 requests
@@ -22,7 +22,7 @@ queue
 
 # How to use
 
-#### Basic usage: 
+### Basic usage: 
 You can pass an file with the desired raw request or an URL
 
 ```./bruteforcer [File path/URL] wordlist```
@@ -53,7 +53,7 @@ And finally, the command will be like this:
 
 As you can see, this file will setup a bruteforce attack to the path parameter too (like the url example), but now, you have total control of the request header.
 
-#### More Examples
+### More Examples
 Like Burp Intruder, you can change the request as you want. More examples that you can do with <b>Bruteforcer</b>: 
 
 <b>Requests with body: </b>
@@ -73,7 +73,7 @@ Content-Lenght: 3
 
 <b></b>
 
-#### Implemented Methods
+### Implemented Methods
 
 ```
 GET, POST, HEAD, PUT, DELETE, OPTIONS, PATCH
@@ -82,25 +82,24 @@ GET, POST, HEAD, PUT, DELETE, OPTIONS, PATCH
 Using a different method than the listed above, the program will return an "<i>Not implemented method</i>" error.
 All the methods will be implemented in a near future.
 
-#### Help
+### Help
 
 ```./bruteforcer -h```
 
-#### Using Threads
+### Using Threads
 
-#### Recursive Mode
+### Recursive Mode
 
-#### Printing Filters
+### Printing Filters
 
-#### Set Proxy
+### Set Proxy
 
-#### Sleep After Request
+### Sleep After Request
 
-#### Burp Suite Proxy Integration
+### Burp Suite Proxy Integration
 
 # Recommended Wordlists
 
 # Limitations
 
-Host ...
 All the limitations will be fixed soon.
