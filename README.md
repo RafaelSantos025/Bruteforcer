@@ -36,9 +36,13 @@ You can pass an file with the desired raw request or an URL
 
 <b>Passing an URL: </b> 
 
-The exmaple bellow will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
+* The exmaple below will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
 
-```./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt```
+    ```./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt```
+
+* The following command will bruteforce some hidden URL parameters in the target:
+
+    ```./bruteforcer "https://www.example.com/create?^^=true" wordlist.txt```
 
 
 <b>Passing an request file: </b>
@@ -60,7 +64,7 @@ And finally, the command will be like this:
 As you can see, this file will setup a bruteforce attack to the path parameter too (like the url example), but now, you have total control of the request header.
 
 ### More Requests Examples
-Like Burp Intruder, you can change the request as you want. More examples that you can do with <b>Bruteforcer</b> bellow: 
+Like Burp Intruder, you can change the request as you want. More examples that you can do with <b>Bruteforcer</b> below: 
 
 <b>Requests With Body: </b>
 
@@ -157,12 +161,27 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 ```
 
 
+<b>Replacing URL parameters: </b>
+
+* The next request will test some command execution vulnerabilities in the file parameter:
+
+```
+GET /view?file=^^ HTTP/1.1
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
+Accept: */*
+Connection: close
+Accept-Encoding: gzip, deflate
+Host: example.com
+Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
+```
+
+
 <b>Multi Strings Replacing: </b>
 
 When the key string putting is done correctly, you can replace the strings the way you wan't
 
 ```
-GET /api/^repl^/^replace^.^replace^ HTTP/1.1
+GET /api/^repl^/^replace^.^replace^?^^=true HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
 Connection: ^replace^
@@ -206,24 +225,33 @@ With Bruteforcer you can filter these response codes or response lengths.
 
 * Response Code Filter
 
-The following command will filter the 301 and 404 codes (it means that all the passed codes will be ignored).
+    The following command will filter the 301 and 404 codes (it means that the passed codes (301 and 404) will be ignored).
 
-```./bruteforcer [file/url] [wordlist] -f [codes]```
+    ```./bruteforcer [file/url] [wordlist] -f [codes]```
 
-```./bruteforcer request.txt wordlist.txt -f "301,404"```
-
-The default value is the 404 code.
-
-To print all the response codes you can pass an empty string, command bellow:
-
-```./bruteforcer request.txt wordlist.txt -f ""```
+    ```./bruteforcer request.txt wordlist.txt -f "301,404"```
 
 * Response Lenght Filter
 
+    Maybe you don't want to filter response codes, but response lengths, here you can do this with the following commands that will filter all responses with 1122 body length:
+
+    ```./bruteforcer [file/url] [wordlist] -lf [response lenght]```
+    
+    ```./bruteforcer request.txt wordlist.txt -lf 1122```
+    
+If you wish, you can use the both filters together:
+
+```./bruteforcer request.txt wordlist.txt -f "400,429,500,404" -lf 2222```
 
 The default value to response code filter is "404", and the length filter default value is "", it means that all the response lengths will be printed.
 
+To show all the response codes you need to pass an empty string to the filter parameter (e.g: -f ""), the command below:
+
+```./bruteforcer request.txt wordlist.txt -f ""```
+
 ### Recursive Mode
+
+
 
 ### Wordlist Extention
 
