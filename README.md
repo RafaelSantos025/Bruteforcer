@@ -7,18 +7,31 @@ It's a <b>Free</b> option to Burp Suite Professional Intruder.
 
 ```git clone ...```
 
-# Used Python Libs
+#### Used Python Libs
+
+```
+requests
+argparse
+threading
+os
+sys
+urllib3
+time
+queue
+```
 
 # How to use
 
 #### Basic usage: 
 You can pass an file with the desired raw request or an URL
 
-```./bruteforcer [File/URL] wordlist```
+```./bruteforcer [File path/URL] wordlist```
 
 <b>Key to replace: </b>
 
-<b>Passing an URL: </b> 
+<i>Like Intruder, the advanted is to replace any string with the desired wordlist</i>
+
+<b>Passing an URL: </b> The exmaple bellow will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
 
 ```./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt```
 
@@ -34,24 +47,60 @@ Accept-Encoding: gzip, deflate
 Connection: close
 ```
 
-And the command will be like this:
+And finally, the command will be like this:
 
 ```./bruteforcer request.txt wordlist.txt```
 
-The URL and the File exmaples above will make a bruteforce attack in the path parameter, indicated by the <i>Replace Key (^^)</i>.
+As you can see, this file will setup a bruteforce attack to the path parameter too (like the url example), but now, you have total control of the request header.
+
+#### More Examples
+Like Burp Intruder, you can change the request as you want. More examples that you can do with <b>Bruteforcer</b>: 
+
+<b>Requests with body: </b>
+
+```
+POST /^^ HTTP/1.1
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
+Accept: */*
+Connection: close
+Accept-Encoding: gzip, deflate
+Host: www.example.com
+Content-Type: application/json
+Content-Lenght: 3
+
+{}
+```
+
+<b></b>
+
+#### Implemented Methods
+
+```
+GET, POST, HEAD, PUT, DELETE, OPTIONS, PATCH
+```
+
+Using a different method than the listed above, the program will return an "<i>Not implemented method</i>" error.
+All the methods will be implemented in a near future.
 
 #### Help
 
 ```./bruteforcer -h```
 
-#### Threads
+#### Using Threads
 
 #### Recursive Mode
 
-#### Filters
+#### Printing Filters
 
-#### Proxy
+#### Set Proxy
 
-#### Sleep
+#### Sleep After Request
 
-#### Burp Suite Integration
+#### Burp Suite Proxy Integration
+
+# Recommended Wordlists
+
+# Limitations
+
+Host ...
+All the limitations will be fixed soon.
