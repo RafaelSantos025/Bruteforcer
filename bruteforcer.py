@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#Rafael Santos
-
 import requests
 import argparse
 import threading
@@ -13,13 +9,16 @@ import queue
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-parser = argparse.ArgumentParser(description="MyRecon")
+parser = argparse.ArgumentParser(description="Bruteforcer: Advanced Header Wordlist Bruteforce Tool.")
 parser.add_argument("target", help="Will be your target, it can be a file containing the header, or an URL")
 parser.add_argument("wordlist", help="Wordlist path")
 parser.add_argument("-t", dest="threadsNumber", default=3, help="Number of threads to use")
-parser.add_argument("-f", dest="filter", default="404", help="Do not print listed code(s)")
+parser.add_argument("-f", dest="filter", default="404", help="Ignore listed code(s)")
 parser.add_argument("-k", dest="Key", default="^", help="Key to replace: ^string_to_replace^")
-parser.add_argument("-lf", dest="lenghtFilter", default="", help="Do not print passed length responses")
+parser.add_argument("-lf", dest="lenghtFilter", default="", help="Ignore passed length responses")
+parser.add_argument("-r", dest="recursive", action="store_true", help="Use recursive mode")
+parser.add_argument("-rc", dest="recursiveCodes", default="200", help="Only release recursive wordlist to this codes")
+parser.add_argument("-rs", dest="recursiveSeparator", default="/", help="Use an arbitrary character separator when using the recursive mode")
 parser.add_argument("-e", dest="wordlistExtension", default="", help="Add a extension to the passed wordlist: e.g: -e \".txt\"")
 parser.add_argument("-sleep", dest="sleepAfter", default="0", help="Sleep before eatch request")
 args = parser.parse_args()
@@ -34,12 +33,16 @@ extension = args.wordlistExtension
 fromProgressBar = "from_progress_bar"
 sleepAfter = float(args.sleepAfter)
 isSleeping = False
+recursiveCodes = args.recursiveCodes
+recursiveSeparator = args.recursiveSeparator
+recursive = args.recursive
+proxy = {"127.0.0.1":"8080"} #TODO BurpProxy
 
 if sleepAfter != 0:
     isSleeping = True
 
-if numberOfThreads < 1:
-    print("Use at least 1 thread")
+if (numberOfThreads < 1) or (numberOfThreads > 1000):
+    print("Invalid threads number, choose between 1 - 1000")
     exit(0)
 
 class ThreadSettings():
@@ -49,14 +52,18 @@ class ThreadSettings():
 class ProgressBar():
     progress = 0
     requestsMade = 0
+    pendingRequests = 0
 
 class ScanUtils():
-    #TODO
-    pass
+    wordlistLength = 0
+    baseWordlist = []
+    wordlist = []
+    recursiveWordlist = []
+    attackType = None
 
 def checkProgressBar():
     ProgressBar.requestsMade += 1
-    percent = int(round(100 / (float(wordlistLength)/float(ProgressBar.requestsMade))))
+    percent = int(round(100 / (float(ProgressBar.pendingRequests)/float(ProgressBar.requestsMade))))
     if percent > ProgressBar.progress:
         ProgressBar.progress += 1
         ThreadSettings.messages.put(fromProgressBar)
@@ -79,7 +86,7 @@ def printProgressbar():
     sys.stdout.write(str(ProgressBar.progress) + "%")
     sys.stdout.write("]")
     sys.stdout.write("[")
-    sys.stdout.write(str(ProgressBar.requestsMade) + "/" + str(wordlistLength))
+    sys.stdout.write(str(ProgressBar.requestsMade) + "/" + str(ProgressBar.pendingRequests))
     sys.stdout.write("]")
     sys.stdout.write(" {")
     for i in range(0, progress):
@@ -111,7 +118,9 @@ def printReq():
                     sys.stdout.flush()
                     printProgressbar()
                 elif code not in filter:
-
+                    if (code in recursiveCodes) or (recursiveCodes == "all"):
+                        for w in ScanUtils.baseWordlist:
+                            ScanUtils.recursiveWordlist.append(word + recursiveSeparator + w)
                     if len(responseLength) >= 14:
                         pass
                     else:
@@ -355,7 +364,7 @@ def headerAttack(ini, end):
         for i in range(ini, end):
             if ThreadSettings.stop:
                 break
-            word = wordlist[i]
+            word = ScanUtils.wordlist[i]
             header = readFile(headerName)
             alignedHeader, body, method, path, host, hasBody = alignHttpHeader(header)
             finalHeader, finalBody, finalHost, finalPath = changeRequestToPassedWordlist(alignedHeader, body, path, host, word, hasBody)
@@ -369,16 +378,16 @@ def urlattack(ini, end):
         for i in range(ini, end):
             if ThreadSettings.stop:
                 break
-            word = wordlist[i]
+            word = ScanUtils.wordlist[i]
             url = replaceKey(headerName, word)
             makeUrlRequest(url, word)
     except Exception as error:
         exception("urlAttack() " + str(error))
 
-def runThreads(function):
+def runThreads():
     try:
         threads = []
-        dWordlist = int(wordlistLength/numberOfThreads)
+        dWordlist = int(ScanUtils.wordlistLength/numberOfThreads)
         ini = 0
         end = dWordlist
 
@@ -386,86 +395,110 @@ def runThreads(function):
         printReqThread.start()
 
         if numberOfThreads == 1:
-            thread = threading.Thread(target=function, args=[0, wordlistLength])
+            thread = threading.Thread(target=ScanUtils.attackType, args=[0, ScanUtils.wordlistLength])
             threads.append(thread)
 
         else:
-            threadToRun = threading.Thread(target=function, args=[ini, end])
+            threadToRun = threading.Thread(target=ScanUtils.attackType, args=[ini, end])
             threads.append(threadToRun)
 
             for i in range(0, numberOfThreads-1):
                 ini = ini + dWordlist
                 end = end + dWordlist
 
-                threadToRun = threading.Thread(target=function, args=[ini, end])
+                threadToRun = threading.Thread(target=ScanUtils.attackType, args=[ini, end])
                 threads.append(threadToRun)
 
-            if end < wordlistLength:
-                finalThreadToRun = threading.Thread(target=function, args=[end, wordlistLength])
+            if end < ScanUtils.wordlistLength:
+                finalThreadToRun = threading.Thread(target=ScanUtils.attackType, args=[end, ScanUtils.wordlistLength])
                 threads.append(finalThreadToRun)
 
         for thread in threads:
             thread.start()
-    except Exception as error:
-        exception("runThreads() " + str(error))
-
-def getUrl():
-    data = readFile(headerName)
-    for line in data:
-        line = line.replace("\n", "")
-        if "Host: " in line:
-            parts = line.split(": ")
-            if len(parts) != 1:
-                return parts[1]
-            else:
-                return "Could not calculate"
-    return "Could not calculate"
-
-def main():
-    try:
-        requestPerLoop = wordlistLength/numberOfThreads
-        print("[*] Starting Bruteforcer [*]\n")
-        print("[*] WordList length: " + str(wordlistLength))
-        print("[*] Threads: " + str(numberOfThreads))
-        print("[*] Filter set to do not print [" + str(filter) + "] codes")
-        print("[*] Requests per loop: " + str(int(requestPerLoop)))
-
-        if os.path.isfile(headerName):
-            url = getUrl()
-            print("[*] Target: " + url)
-
-            if "." not in url:
-                exception("Main() Invalid target")
-
-            print("[*] Starting header attack\n")
-            runThreads(headerAttack)
-
-        else:
-            print("[*] Host: " + headerName)
-            print("[*] Starting url attack\n")
-            runThreads(urlattack)
 
         try:
             while True:
                 time.sleep(2)
                 if str(threading.active_count()) == "2":
                     ThreadSettings.messages.put("exit")
-                    exit(0)
+                    if recursive and (len(ScanUtils.recursiveWordlist) > 0):
+                        ScanUtils.wordlist = ScanUtils.recursiveWordlist
+                        ProgressBar.pendingRequests += len(ScanUtils.recursiveWordlist)
+                        ProgressBar.progress = 0
+                        ScanUtils.recursiveWordlist = []
+                        ScanUtils.wordlistLength = len(ScanUtils.wordlist)
+
+                        while True:
+                            if str(threading.active_count()) == "1":
+                                break
+                            time.sleep(1)
+
+                        runThreads()
+                    else:
+                        exit(0)
         except KeyboardInterrupt:
             print("\n[*] Stopping threads ...")
             ThreadSettings.stop = True
             ThreadSettings.messages.put("exit")
             exit(0)
+    except Exception as error:
+        exception("runThreads() " + str(error))
 
+def getUrl():
+    data = readFile(headerName)
+    path = data[0].split(" ")[1]
+    for line in data:
+        line = line.replace("\n", "")
+        if "Host: " in line:
+            parts = line.split(": ")
+            if len(parts) != 1:
+                url  = parts[1] + path
+                if "." not in url:
+                    exception("Main() Invalid target")
+                return url
+
+    return "Could not calculate"
+
+def generateBaseWordlist():
+    try:
+        wordlist = []
+        data = readFile(wordlistName)
+
+        for line in data:
+            wordlist.append(line.replace("\n", "") + extension)
+
+        ScanUtils.wordlist = wordlist
+        ScanUtils.baseWordlist = wordlist
+        ScanUtils.wordlistLength = len(wordlist)
+        ProgressBar.pendingRequests = ScanUtils.wordlistLength
+    except Exception as error:
+        exception("generateBaseWordlist() " + str(error))
+
+def main():
+    try:
+        generateBaseWordlist()
+        requestPerLoop = ScanUtils.wordlistLength/numberOfThreads
+
+        print("[*] Starting Bruteforcer [*]\n")
+        print("[*] WordList length: " + str(ScanUtils.wordlistLength))
+        print("[*] Threads: " + str(numberOfThreads))
+        print("[*] Filter set to do not print [" + str(filter) + "] codes")
+        print("[*] Requests per loop: " + str(int(requestPerLoop)))
+        if recursive:
+            print("[*] Will recursively scan: [" + recursiveCodes + "] codes")
+
+        if os.path.isfile(headerName):
+            url = getUrl()
+            print("[*] Target: https://" + url)
+            print("[*] Starting header attack\n")
+            ScanUtils.attackType = headerAttack
+        else:
+            print("[*] Target: " + headerName)
+            print("[*] Starting url attack\n")
+            ScanUtils.attackType = urlattack
+
+        runThreads()
     except Exception as error:
         exception("main() " + str(error))
-
-wordlist = []
-data = readFile(wordlistName)
-
-for line in data:
-    wordlist.append(line.replace("\n", "") + extension)
-
-wordlistLength = len(wordlist)
 
 main()
