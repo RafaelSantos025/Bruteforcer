@@ -360,7 +360,17 @@ To show all the response codes you need to pass an empty string to the filter pa
 
 ### Recursive Mode
 
+To recursively bruteforce your target you can use the `-r` option. Example bellow:
 
+```bash
+./bruteforcer [file/url] [wordlist] -r
+```
+
+```bash
+./bruteforcer request.txt wordlist.txt -r
+```
+
+For default, Bruteforcer will recursively scan 
 
 ### Wordlist Extention
 
