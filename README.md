@@ -436,6 +436,20 @@ admin.login
 ### Set Proxy
 Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See the [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) topic to make burp intercept all the traffic.
 
+```bash
+./bruteforce [file/url] [wordlist] -proxy [ip/domain:port]
+```
+
+Remember to awalys follow this regex: `(proxy IP address or domain):(proxy port)`
+
+* Setting proxy to an external IP:
+
+```bash
+./bruteforce "https://www.example.com/plugins/^^" plugins_wordlist.txt -proxy "8.8.8.8:4444"
+```
+
+To local proxies use the string `localhost` instead `127.0.0.1`.
+
 ### Burp Suite Proxy Integration
 
 
