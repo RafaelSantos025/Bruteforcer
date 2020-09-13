@@ -443,12 +443,6 @@ Bruteforce supports to add an extension to the passed wordlist with the option `
 ./bruteforce "https://www.example.com/^^" wordlist.txt -e ".txt"
 ```
 
-* Setting a wordlist extension to brutefocer `.php` files:
-
-```bash
-./bruteforce "https://www.example.com/^^" wordlist.txt -e ".php"
-```
-
 Bruteforcer will generate a wordlist in runtime like this:
 
 ```
@@ -459,6 +453,12 @@ images.txt
 login.txt
 email.txt
    ...   
+```
+
+* Setting a wordlist extension to brutefocer `.php` files:
+
+```bash
+./bruteforce "https://www.example.com/^^" wordlist.txt -e ".php"
 ```
 
 * Setting a wordlist extension to brutefocer `.backup` files:
