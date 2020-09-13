@@ -7,7 +7,9 @@ It's a <b>Free</b> option to Burp Suite Professional Intruder.
 
 # Setup
 
-```git clone https://github.com/RafaelSantos025/Bruteforcer.git```
+```bash
+git clone https://github.com/RafaelSantos025/Bruteforcer.git
+```
 
 ```cd Bruteforcer/```
 
