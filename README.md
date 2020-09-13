@@ -370,15 +370,33 @@ To recursively bruteforce your target you can use the `-r` option. Example bello
 ./bruteforcer request.txt wordlist.txt -r
 ```
 
-For default, Bruteforcer will recursively scan all the response codes and response lengths eligible for printing, respecting the filters described above, but you can apply filters only for the recursive mode. For example, You set up an attack to return all response codes, but you want to make recursive attacks only on responses that returned a `+ 200` code.
+For default, Bruteforcer will recursively scan all the response codes and response lengths eligible for printing, respecting the filters described above. But you can apply filters only for the recursive mode. For example, You set up an attack to return (print) all the response codes, but you want to make recursive attacks only on responses that returned a `200` code.
+
+You can apply this filter by adding the `-rc` (Recursive Response Code Filter):
+
+* Setting to only recursively attack `200` response codes:
+
+```bash
+./bruteforcer request.txt wordlist.txt -r -rc "200"
+```
+
+* Setting to only recursively attack `200`, `302` and `500` response codes:
+
+```bash
+./bruteforcer request.txt wordlist.txt -r -rc "200, 302, 500"
+```
 
 ### Wordlist Extention
 
+
 ### Set Proxy
+
+
+### Burp Suite Proxy Integration
+
 
 ### Sleep After Request
 
-### Burp Suite Proxy Integration
 
 # Recommended Wordlists
 
