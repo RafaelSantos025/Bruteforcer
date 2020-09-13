@@ -255,6 +255,8 @@ Bruteforcer accepts almost all Content-Type's and Body Structures when replacing
 
 ### Help
 
+Shows options available
+
 ```bash
 ./bruteforcer -h
 ```
@@ -370,11 +372,18 @@ To recursively bruteforce your target you can use the `-r` option. Example bello
 ./bruteforcer request.txt wordlist.txt -r
 ```
 
+
+<b>Applying Filters</b>
+
 For default, Bruteforcer will recursively scan all the response codes and response lengths eligible for printing, respecting the filters described above. But you can apply filters only for the recursive mode. For example, You set up an attack to return (print) all the response codes, but you want to make recursive attacks only on responses that returned a `200` code.
 
 You can apply this filter by adding the `-rc` (Recursive Response Code Filter):
 
-* Setting to only recursively attack `200` response codes:
+```bash
+./bruteforcer [file/url] [wordlist] -r -rc [response code(s)]
+```
+
+* Setting the `.` as the charact to only recursively attack `200` response codes:
 
 ```bash
 ./bruteforcer request.txt wordlist.txt -r -rc "200"
@@ -384,6 +393,41 @@ You can apply this filter by adding the `-rc` (Recursive Response Code Filter):
 
 ```bash
 ./bruteforcer request.txt wordlist.txt -r -rc "200, 302, 500"
+```
+
+
+<b>Choosing the Recursive Separator</b>
+
+For default, Bruteforcer uses the following character to separate the found word when applying it to the passed wordlist again: `/`.
+
+I use `/` because the most typical case for using the Recursive Mode is when I'm bruteforcing paths, but you can be bruteforcing anything, so there is an option to change the default separator, for this, you can use the `-rs` option.
+
+```bash
+./bruteforce [file/url] [wordlist] -r -rs [character separator(s)]
+```
+
+* Setting the `.` as the character separator:
+
+```bash
+./bruteforce request.txt wordlist. -r -rs "."
+```
+
+* Result when using the Recursive Mode with the default separator:
+
+```http
+admin/files
+admin/uploads
+admin/login
+  ...  
+```
+
+* Result when using the `.` as the character separator:
+
+```http
+admin.files
+admin.uploads
+admin.login
+  ...  
 ```
 
 ### Wordlist Extention
