@@ -511,7 +511,16 @@ Remember to awalys follow this regex: `(proxy IP address or domain):(proxy port)
 To local proxies use the string `localhost` instead `127.0.0.1`.
 
 ### Burp Suite Proxy Integration
+Intercept all the Bruteforcer traffic with Burp gives you some advantages:
 
+* You can see the complete request and responses that Bruteforcer made
+* You can use another Burp functionalities with the intercepted request
+
+When you start Burp Suite the default proxy configuration is this (`Proxy` -> `Options` -> `Proxy Listeners`):
+
+![Burp-proxy](https://i.ibb.co/Xpm2tRS/burp-Proxy.png)
+
+The proxy port is 8080, but it may be running in another port, so don't forget to check before running Bruteforcer
 
 ### Sleep After Request
 
