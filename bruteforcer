@@ -353,17 +353,6 @@ def changeRequestToPassedWordlist(header, body, path, host, word, hasBody):
     except Exception as error:
         exception("alignRequest() " + str(error))
 
-def estimeTime(url, requestPerLoop):
-    try:
-        url = url.replace("^", "")
-        start_time = time.time()
-        requests.get(url, verify=False, allow_redirects=False)
-        estimatedTime = (time.time() - start_time)*requestPerLoop
-
-        return estimatedTime
-    except Exception as error:
-        exception("estimateTime() Invalid host " + str(error))
-
 def prepareAndMakeRequest(header, body, host, path, method, wolrd, hasBody):
     try:
         url = "https://" + host + path
