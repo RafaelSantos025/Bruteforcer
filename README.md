@@ -1,8 +1,9 @@
 # Bruteforcer
 Advanced header wordlist bruteforce tool. 
 
-It's a <b>Free</b> option to Burp Suite Professional Intruder.
-<i> [I don't have money to buy Burp Suite Professional Intruder, so I wrote my own.]</i>)
+It's a <b>Free</b> option to Burp Suite Professional Intruder. 
+
+<i>I don't have money to buy Burp Suite Professional Intruder, so I wrote my own.</i>
 
 # Setup
 
