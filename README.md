@@ -41,10 +41,47 @@ You can pass a file with the desired raw request or an URL, these commands are m
 
 <b>Key to replace: </b>
 
-<i>Like Intruder, the advanced is to replace any string with the desired wordlist</i>
+<i>Like Intruder, the advantage is to replace any string with the desired wordlist</i>
+
+Replacement Key is the name of the character used to specify the string that you want to replace in the HTTP request or URL.
+
+Burp Intruder choose the following character to do this job: ```§```, but it's hard to find on our Keyboard, difficulting the usage of my program. (On Burp Suite Intruder it works fine because the Replacement Key is added automatically).
+
+So, I choose a character that is visibly present in almost Keyboards, and, at the same time, not commonly used in HTTP requests and URLs.
+
+The chosen character is ```^```. In other words: Every string or character between two ```^``` will be replaced to the passed wordlist.
+
+<b>Examples of How it works</b>
+
+* Replacement key: ```^```
+* String to replace: ```all animals```
+* String to be replaced: ```I love dogs and ^cats^!```
+
+* Result: ```I love dogs and all animals!```
+
+<b>Examples in a URL</b>
+
+* Replacement key: ```^```
+* String to replace: ```admin```
+* String to be replaced: ```https://www.example.com/^toReplace^```
+
+* Result: ```https://www.example.com/admin```
+
+<b>I Want to change the Replacement Key</b>
+If the character used to be the default Replacement Key is being used to the target Server to understand the request (E.g: The Server needs the key ^ to complete the request), you can change the Replacement Key with the parameter -k, example bellow:
+
+```bash
+./bruteforcer [file/url] [wordlist] -k [replacement key]
+```
+
+* Changing to the Burp settings:
+
+```bash
+./bruteforcer "https://www.example.com/§" wordlist.txt -k "§"
+```
 
 
-<b>Passing an URL: </b> 
+<b>Passing an URL to attack: </b> 
 
 * The example below will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
 
