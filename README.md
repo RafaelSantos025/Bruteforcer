@@ -3,7 +3,7 @@ Advanced HTTP header wordlist bruteforce tool.
 
 It's a <b>Free</b> option to [Burp Suite Professional](https://portswigger.net/burp/pro) Intruder. 
 
-<i>I don't have money to buy Burp Suite Professional, so I wrote my own Intruder.</i>
+<i>I don't have money to buy Burp Suite Professional, so I wrote my own Intruder with <b>1000 threads</b>.</i>
 
 # Setup
 
