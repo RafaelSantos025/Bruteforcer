@@ -39,6 +39,7 @@ You can pass a file with the desired raw request or an URL, these commands are m
 ./bruteforcer [file-path/url] [wordlist]
 ```
 
+
 <b>Key to replace: </b>
 
 <i>Like Intruder, the advantage is to replace any string with the desired wordlist</i>
@@ -51,6 +52,7 @@ So, I choose a character that is visibly present in almost Keyboards, and, at th
 
 The chosen character is ```^```. In other words: Every string or character between two ```^``` will be replaced to the passed wordlist.
 
+
 <b>Examples of How it works</b>
 
 * Replacement key: ```^```
@@ -58,6 +60,7 @@ The chosen character is ```^```. In other words: Every string or character betwe
 * String to be replaced: ```I love dogs and ^cats^!```
 
 * Result: ```I love dogs and all animals!```
+
 
 <b>Examples in a URL</b>
 
@@ -67,7 +70,9 @@ The chosen character is ```^```. In other words: Every string or character betwe
 
 * Result: ```https://www.example.com/admin```
 
+
 <b>I Want to change the Replacement Key</b>
+
 If the character used to be the default Replacement Key is being used to the target Server to understand the request (E.g: The Server needs the key ^ to complete the request), you can change the Replacement Key with the parameter -k, example bellow:
 
 ```bash
