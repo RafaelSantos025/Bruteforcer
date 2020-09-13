@@ -434,7 +434,7 @@ admin.login
 
 
 ### Set Proxy
-
+Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) to make burp intercept all the traffic..
 
 ### Burp Suite Proxy Integration
 
