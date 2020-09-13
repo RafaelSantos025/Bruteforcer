@@ -412,7 +412,7 @@ I use `/` because the most typical case for using the Recursive Mode is when I'm
 ./bruteforce request.txt wordlist. -r -rs "."
 ```
 
-* Result when using the Recursive Mode with the default separator:
+* How the engine will work when using the Recursive Mode with the default separator:
 
 ```http
 admin/files
@@ -421,7 +421,7 @@ admin/login
   ...  
 ```
 
-* Result when using the `.` as the character separator:
+* How the engine will work when using the `.` as the character separator:
 
 ```http
 admin.files
