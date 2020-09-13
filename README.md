@@ -55,7 +55,7 @@ Note that when passing URLs as a parameter, the only request method that the pro
 
 The request file, called "request.txt" will look like this:
 
-```
+```html
 GET /^toReplace^ HTTP/1.1
 Host: www.example.com
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
@@ -74,7 +74,7 @@ Like Burp Intruder, you can change the request as you want. More examples that y
 
 <b>Requests With Body: </b>
 
-```
+```http
 POST /^^ HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
