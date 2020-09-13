@@ -474,7 +474,7 @@ def getUrl():
                     exception("Main() Invalid target")
                 return url
 
-    return "Could not calculate"
+    return ""
 
 def generateBaseWordlist():
     try:
