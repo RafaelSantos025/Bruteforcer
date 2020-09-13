@@ -522,6 +522,16 @@ When you start Burp Suite the default proxy configuration is this (`Proxy` -> `O
 
 The proxy port is 8080, but it may be running in another port, so don't forget to check before running Bruteforcer
 
+To set the proxy using the Burp default configuration (port 8080) the command will be this:
+
+```bash
+./bruteforce request.txt wordlist.txt -proxy "localhost:8080"
+```
+
+To see the traffic go to `Proxy` -> `HTTP history`
+
+![burp-traffic](https://i.ibb.co/KW2NvQY/burp-Traffic.png)
+
 ### Sleep After Request
 
 
