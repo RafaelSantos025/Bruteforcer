@@ -444,9 +444,9 @@ Proxying the connection is almost essential when attacking Web Sites. Bruteforce
 
 # Recommended Wordlists
 
-* (Fuzzdb)[https://github.com/fuzzdb-project/fuzzdb]:
-* (Dirb)[https://github.com/v0re/dirb]:
-* (api_wordlist)[https://github.com/chrislockard/api_wordlist]:
+* [<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb):
+* [<b>Dirb</b>](https://github.com/v0re/dirb):
+* [<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist):
 
 # Limitations
 
