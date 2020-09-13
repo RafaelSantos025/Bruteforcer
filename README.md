@@ -479,6 +479,20 @@ email.txt
 ./bruteforce "https://www.example.com/^^" wordlist.txt -e ".zip"
 ```
 
+Bruteforcer will not add a new wordlist to the attack, what it does here is modify the passed one.
+
+If will choose to use the Recursive Mode togheter, the recursive wordlist will be like this:
+
+```
+administrator.php/files.php
+administrator.php/js.php
+administrator.php/javascript.php
+administrator.php/images.php
+administrator.php/login.php
+administrator.php/email.php
+   ...   
+```
+
 ### Set Proxy
 Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See the [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) topic to make burp intercept all the traffic.
 
