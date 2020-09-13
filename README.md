@@ -1,5 +1,5 @@
 # Bruteforcer
-Advanced header wordlist bruteforce tool. 
+Advanced HTTP header wordlist bruteforce tool. 
 
 It's a <b>Free</b> option to Burp Suite Professional Intruder. 
 
