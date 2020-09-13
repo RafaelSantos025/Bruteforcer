@@ -1,5 +1,6 @@
 # Bruteforcer
 Advanced header wordlist bruteforce tool. 
+
 It's a <b>Free</b> option to Burp Suite Professional Intruder.
 <i> [I don't have money to buy Burp Suite Professional Intruder, so I wrote my own.]</i>)
 
@@ -27,18 +28,18 @@ queue
 # How to use
 
 ### Basic usage: 
-You can pass an file with the desired raw request or an URL, these commands are mandatory.
+You can pass a file with the desired raw request or an URL, these commands are mandatory.
 
 ```./bruteforcer [file-path/url] [wordlist]```
 
 <b>Key to replace: </b>
 
-<i>Like Intruder, the advanted is to replace any string with the desired wordlist</i>
+<i>Like Intruder, the advanced is to replace any string with the desired wordlist</i>
 
 
 <b>Passing an URL: </b> 
 
-* The exmaple below will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
+* The example below will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
 
     ```./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt```
 
@@ -51,7 +52,7 @@ Note that when passing URLs as a parameter, the only request method that the pro
 
 <b>Passing an request file: </b>
 
-The request file, called "request.txt" will looks like this:
+The request file, called "request.txt" will look like this:
 
 ```
 GET /^toReplace^ HTTP/1.1
@@ -65,7 +66,7 @@ And finally, the command will be like this:
 
 ```./bruteforcer request.txt wordlist.txt```
 
-As you can see, this file will setup a bruteforce attack to the path parameter too (like the url example), but now, you have total control of the request header.
+As you can see, this file will setup a bruteforce attack to the path parameter too (like the URL example), but now, you have total control of the request header.
 
 ### More Requests Examples
 Like Burp Intruder, you can change the request as you want. More examples that you can do with <b>Bruteforcer</b> below: 
@@ -182,7 +183,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 <b>Multi Strings Replacing: </b>
 
-When the key string putting is done correctly, you can replace the strings the way you wan't
+When the key string putting is done correctly, you can replace the strings the way you want
 
 ```
 GET /api/^repl^/^replace^.^replace^?^^=true HTTP/1.1
@@ -196,7 +197,7 @@ Cookie: session=^replaceToo^;
 ```
 
 
-Bruteforcer accepts almost all Content-Types and Body Structures when replacing and sending requests.
+Bruteforcer accepts almost all Content-Type's and Body Structures when replacing and sending requests.
 
 ### Help
 
@@ -227,10 +228,10 @@ optional arguments:
   -rs RECURSIVESEPARATOR
                         Use an arbitrary character separator when using the
                         recursive mode
-  -e WORDLISTEXTENSION  Add a extension to the passed wordlist. e.g: -e ".txt"
+  -e WORDLISTEXTENSION  Add an extension to the passed wordlist. e.g: -e ".txt"
   -proxy PROXY          Proxy the requests. Burp Proxy example: -proxy
                         "localhost:8080"
-  -sleep SLEEPAFTER     Sleep before eatch request
+  -sleep SLEEPAFTER     Sleep before each request
 ```
 
 ### Using Threads
@@ -274,7 +275,7 @@ With Bruteforcer you can filter these response codes or response lengths.
     
     ```./bruteforcer request.txt wordlist.txt -lf 1122```
     
-If you wish, you can use the both filters together:
+If you wish, you can use both filters together:
 
 ```./bruteforcer request.txt wordlist.txt -f "400,429,500,404" -lf 2222```
 
