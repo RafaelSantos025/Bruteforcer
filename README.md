@@ -73,7 +73,7 @@ The chosen character is ```^```. In other words: Every string or character betwe
 
 <b>I Want to change the Replacement Key</b>
 
-If the character used to be the default Replacement Key is being used to the target Server to understand the request (E.g: The Server needs the key ^ to complete the request), you can change the Replacement Key with the parameter -k, example bellow:
+If the character used to be the default Replacement Key is being used to the target Server to understand the request (The Server needs the key ^ to complete the request), you can change the Replacement Key with the parameter `-k`, example bellow:
 
 ```bash
 ./bruteforcer [file/url] [wordlist] -k [replacement key]
