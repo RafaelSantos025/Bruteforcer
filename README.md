@@ -321,7 +321,7 @@ For this release, it's not possible to bruteforce HTTP Methods.
 Passing a request file like the following will return a ```Method: ^GET^ is not implemented``` error
 
 ```
-GET / HTTP/1.1
+^GET^ / HTTP/1.1
 Connection: close
 Accept: */*
 Accept-Encoding: gzip, deflate
