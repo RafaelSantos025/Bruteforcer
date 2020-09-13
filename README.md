@@ -1,9 +1,9 @@
 # Bruteforcer
 Advanced HTTP header wordlist bruteforce tool. 
 
-It's a <b>Free</b> option to Burp Suite Professional Intruder. 
+It's a <b>Free</b> option to [Burp Suite Professional](https://portswigger.net/burp/pro) Intruder. 
 
-<i>I don't have money to buy Burp Suite Professional Intruder, so I wrote my own.</i>
+<i>I don't have money to buy Burp Suite Professional, so I wrote my own Intruder.</i>
 
 # Setup
 
@@ -444,9 +444,9 @@ Proxying the connection is almost essential when attacking Web Sites. Bruteforce
 
 # Recommended Wordlists
 
-* [<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb):
-* [<b>Dirb</b>](https://github.com/v0re/dirb):
-* [<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist):
+* [<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb)
+* [<b>Dirb</b>](https://github.com/v0re/dirb)
+* [<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist)
 
 # Limitations
 
