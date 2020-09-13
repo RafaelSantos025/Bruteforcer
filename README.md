@@ -409,7 +409,7 @@ I use `/` because the most typical case for using the Recursive Mode is when I'm
 * Setting the `.` as the character separator:
 
 ```bash
-./bruteforce request.txt wordlist. -r -rs "."
+./bruteforce request.txt wordlist.txt -r -rs "."
 ```
 
 * How the engine will work when using the Recursive Mode with the default separator:
@@ -431,7 +431,53 @@ admin.login
 ```
 
 ### Wordlist Extention
+Bruteforce supports to add an extension to the passed wordlist with the option `-e`.
 
+```bash
+./bruteforce [file/url] [wordlist] -e [extension]
+```
+
+* Setting a wordlist extension to bruteforce `.txt` files:
+
+```bash
+./bruteforce "https://www.example.com/^^" wordlist.txt -e ".txt"
+```
+
+* Setting a wordlist extension to brutefocer `.php` files:
+
+```bash
+./bruteforce "https://www.example.com/^^" wordlist.txt -e ".php"
+```
+
+Bruteforcer will generate a wordlist in runtime like this:
+
+```
+administrator.txt
+js.txt
+javascript.txt
+images.txt
+login.txt
+email.txt
+   ...   
+```
+
+* Setting a wordlist extension to brutefocer `.backup` files:
+
+```bash
+./bruteforce "https://www.example.com/^^" wordlist.txt -e ".backup"
+```
+
+* Setting a wordlist extension to brutefocer `.ini` files:
+
+```bash
+./bruteforce "https://www.example.com/^^" wordlist.txt -e ".ini"
+```
+
+* Setting a wordlist extension to brutefocer `.zip` files:
+
+```bash
+./bruteforce "https://www.example.com/^^" wordlist.txt -e ".zip"
+```
 
 ### Set Proxy
 Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See the [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) topic to make burp intercept all the traffic.
