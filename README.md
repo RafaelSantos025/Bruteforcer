@@ -533,13 +533,23 @@ To see the traffic go to `Proxy` -> `HTTP history`
 ![burp-traffic](https://i.ibb.co/KW2NvQY/burp-Traffic.png)
 
 ### Sleep After Request
+Some targets have rate-limiting or weak servers; in this cases a slow scan is necessary, so Bruteforcer has an option to it, you can make the program sleep after making the request with the `sleep` option.
 
+```bash
+./bruteforcer [file/url] [wordlist] -sleep [(float)seconds]
+```
+
+* Setting Bruteforcer to sleep 1 second after each request while using 1 thread:
+
+```bash
+./bruteforcer request.txt wordlist.txt -t 1 -sleep 1
+```
 
 # Recommended Wordlists
 
-* [<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb)
-* [<b>Dirb</b>](https://github.com/v0re/dirb)
-* [<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist)
+* ![<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb)
+* ![<b>Dirb</b>](https://github.com/v0re/dirb)
+* ![<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist)
 
 # Limitations
 
