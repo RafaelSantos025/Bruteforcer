@@ -434,7 +434,7 @@ admin.login
 
 
 ### Set Proxy
-Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) to make burp intercept all the traffic..
+Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See the [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) topic to make burp intercept all the traffic.
 
 ### Burp Suite Proxy Integration
 
@@ -444,9 +444,9 @@ Proxying the connection is almost essential when attacking Web Sites. Bruteforce
 
 # Recommended Wordlists
 
-* <b>Fuzzdb</b>: https://github.com/fuzzdb-project/fuzzdb
-* <b>Dirb</b>: https://github.com/v0re/dirb
-* <b>api_wordlist</b>: https://github.com/chrislockard/api_wordlist
+* (<b>Fuzzdb</b>)[https://github.com/fuzzdb-project/fuzzdb]:
+* (<b>Dirb</b>)[https://github.com/v0re/dirb]:
+* (<b>api_wordlist</b>)[https://github.com/chrislockard/api_wordlist]:
 
 # Limitations
 
