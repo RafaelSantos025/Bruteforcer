@@ -5,6 +5,10 @@ It's a <b>Free</b> option to [Burp Suite Professional](https://portswigger.net/b
 
 <i>I don't have money to buy Burp Suite Professional, so I wrote my own Intruder with <b>1000 threads</b>.</i>
 
+* Bruteforce running on terminal:
+
+![Bruteforce](https://i.ibb.co/R0bxtLR/running-Bruteforcer.png)
+
 # Setup
 
 ```bash
