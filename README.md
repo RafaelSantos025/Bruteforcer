@@ -82,7 +82,7 @@ If the character used to be the default Replacement Key is being used to the tar
 * Changing to the Burp settings:
 
 ```bash
-./bruteforcer "https://www.example.com/§" wordlist.txt -k "§"
+./bruteforcer "https://www.example.com/§string-to-replace§" wordlist.txt -k "§"
 ```
 
 
