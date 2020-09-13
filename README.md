@@ -485,7 +485,7 @@ email.txt
 
 Bruteforcer will not add a new wordlist to the attack, what it does here is modifying the passed one.
 
-If will choose to use the Recursive Mode together, the recursive wordlist will be like this:
+If you choose to use the Recursive Mode together, the recursive wordlist will be like this:
 
 ```html
 administrator.php/files.php
