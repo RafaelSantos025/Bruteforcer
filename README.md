@@ -228,24 +228,25 @@ Bruteforcer: Advanced Header Wordlist Bruteforce Tool.
 
 positional arguments:
   target                Will be your target, it can be a file containing the
-                        header, or an URL
-  wordlist              Wordlist path
+                        header, or an URL.
+  wordlist              Wordlist path.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -t THREADSNUMBER      Number of threads to use
-  -f FILTER             Ignore listed code(s)
-  -k KEY                Key to replace: ^string_to_replace^
-  -lf LENGHTFILTER      Ignore passed length responses
-  -r                    Use recursive mode
-  -rc RECURSIVECODES    Only release recursive wordlist to this codes
+  -t THREADSNUMBER      Number of threads to use.
+  -f FILTER             Ignore listed code(s).
+  -k KEY                Key to replace: ^string_to_replace^.
+  -lf LENGHTFILTER      Ignore passed length responses.
+  -r                    Use recursive mode.
+  -rc RECURSIVECODES    Only release recursive wordlist to this codes.
   -rs RECURSIVESEPARATOR
-                        Use an arbitrary character separator when using the
-                        recursive mode
-  -e WORDLISTEXTENSION  Add an extension to the passed wordlist. e.g: -e ".txt"
+                        use an arbitrary character separator when using the
+                        recursive mode.
+  -e WORDLISTEXTENSION  Add an extension to the passed wordlist. e.g: -e
+                        ".txt".
   -proxy PROXY          Proxy the requests. Burp Proxy example: -proxy
-                        "localhost:8080"
-  -sleep SLEEPAFTER     Sleep before each request
+                        "localhost:8080".
+  -sleep SLEEPAFTER     Sleep before each request.
 ```
 
 ### Using Threads
