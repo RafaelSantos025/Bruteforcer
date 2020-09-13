@@ -47,7 +47,6 @@ You can pass a file with the desired raw request or an URL, these commands are m
 * The following command will bruteforce some hidden URL parameters in the target:
 
     ```./bruteforcer "https://www.example.com/create?^^=true" wordlist.txt```
-
 Note that when passing URLs as a parameter, the only request method that the program can perform is the GET method.
 
 
@@ -55,7 +54,7 @@ Note that when passing URLs as a parameter, the only request method that the pro
 
 The request file, called "request.txt" will look like this:
 
-```html
+```http
 GET /^toReplace^ HTTP/1.1
 Host: www.example.com
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
@@ -92,7 +91,7 @@ Content-Lenght: 3
 
 * The followinng request will try to bruteforce some boolean cookie (e.g: <i>isAdmin=true</i>):
 
-```
+```http
 GET /api/ HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -105,7 +104,7 @@ Cookie: ^replace^=true;
 
 * The next request will bruteforce some hidden headers (e.g: <i>X-Forwarded-For</i>):
 
-```
+```http
 GET /api/ HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -119,7 +118,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 * The next Request will bruteforce some Content-Type's:
 
-```
+```http
 PUT / HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -136,7 +135,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 * The request below setup an automatic XSS attack against a blog comment post:
 
-```
+```http
 POST /api/comments HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -152,7 +151,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 * The following request bruteforce a hidden parameter through a patch request:
 
-```
+```http
 PATCH /api/delete HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -171,7 +170,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 * The next request will test some command execution vulnerabilities in the file parameter:
 
-```
+```http
 GET /view?file=^^ HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -186,7 +185,7 @@ Cookie: session=hjchrhhnci4ofjniej203dvervweocikrm09kvriorver;
 
 When the key string putting is done correctly, you can replace the strings the way you want
 
-```
+```http
 GET /api/^repl^/^replace^.^replace^?^^=true HTTP/1.1
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:71.0) Gecko/20100101 Firefox/71.0
 Accept: */*
@@ -320,7 +319,7 @@ For this release, it's not possible to bruteforce HTTP Methods.
 
 Passing a request file like the following will return a ```Method: ^GET^ is not implemented``` error
 
-```
+```http
 ^GET^ / HTTP/1.1
 Connection: close
 Accept: */*
