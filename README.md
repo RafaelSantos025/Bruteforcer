@@ -548,7 +548,7 @@ Some targets have rate-limiting or weak servers; in this cases a slow scan is ne
 # Recommended Wordlists
 
 * [<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb)
-* [<b>Dirb</b>](https://github.com/v0re/dirb)
+* [<b>Dirb wordlists</b>](https://github.com/v0re/dirb/tree/master/wordlists)
 * [<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist)
 
 # Limitations
