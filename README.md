@@ -40,7 +40,7 @@ You can pass a file with the desired raw request or an URL, these commands are m
 ```
 
 
-<b>Key to replace: </b>
+<b>Replacement Key: </b>
 
 <i>Like Intruder, the advantage is to replace any string with the desired wordlist</i>
 
@@ -88,7 +88,7 @@ If the character used to be the default Replacement Key is being used to the tar
 
 <b>Passing an URL to attack: </b> 
 
-* The example below will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
+* The example below will make a bruteforce attack in the path parameter (indicated by the Replacement Key `^^`)
 
     ```bash
     ./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt
