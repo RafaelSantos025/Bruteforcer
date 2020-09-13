@@ -445,7 +445,7 @@ Bruteforce supports to add an extension to the passed wordlist with the option `
 
 Bruteforcer will generate a wordlist in runtime like this:
 
-```
+```html
 administrator.txt
 js.txt
 javascript.txt
@@ -479,11 +479,11 @@ email.txt
 ./bruteforce "https://www.example.com/^^" wordlist.txt -e ".zip"
 ```
 
-Bruteforcer will not add a new wordlist to the attack, what it does here is modify the passed one.
+Bruteforcer will not add a new wordlist to the attack, what it does here is modifying the passed one.
 
-If will choose to use the Recursive Mode togheter, the recursive wordlist will be like this:
+If will choose to use the Recursive Mode together, the recursive wordlist will be like this:
 
-```
+```html
 administrator.php/files.php
 administrator.php/js.php
 administrator.php/javascript.php
