@@ -11,29 +11,33 @@ It's a <b>Free</b> option to Burp Suite Professional Intruder.
 git clone https://github.com/RafaelSantos025/Bruteforcer.git
 ```
 
-```cd Bruteforcer/```
+```bash
+cd Bruteforcer/
+```
 
-```chmod +x bruteforcer```
+```bash
+chmod +x bruteforcer
+```
 
 ### Used Python Libs
 
-```
-requests
-argparse
-threading
-os
-sys
-urllib3
-time
-queue
-```
+* requests
+* argparse
+* threading
+* os
+* sys
+* urllib3
+* time
+* queue
 
 # How to use
 
 ### Basic usage: 
 You can pass a file with the desired raw request or an URL, these commands are mandatory.
 
-```./bruteforcer [file-path/url] [wordlist]```
+```bash
+./bruteforcer [file-path/url] [wordlist]
+```
 
 <b>Key to replace: </b>
 
@@ -44,11 +48,15 @@ You can pass a file with the desired raw request or an URL, these commands are m
 
 * The example below will make a bruteforce attack in the path parameter (indicated by the <i>Replace Key (^^)</i>)
 
-    ```./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt```
+    ```bash
+    ./bruteforcer "https://www.example.com/^toReplace^" wordlist.txt
+    ```
 
 * The following command will bruteforce some hidden URL parameters in the target:
 
-    ```./bruteforcer "https://www.example.com/create?^^=true" wordlist.txt```
+    ```bash
+    ./bruteforcer "https://www.example.com/create?^^=true" wordlist.txt
+    ```
 Note that when passing URLs as a parameter, the only request method that the program can perform is the GET method.
 
 
@@ -66,7 +74,9 @@ Connection: close
 
 And finally, the command will be like this:
 
-```./bruteforcer request.txt wordlist.txt```
+```bash
+./bruteforcer request.txt wordlist.txt
+```
 
 As you can see, this file will setup a bruteforce attack to the path parameter too (like the URL example), but now, you have total control of the request header.
 
@@ -203,9 +213,11 @@ Bruteforcer accepts almost all Content-Type's and Body Structures when replacing
 
 ### Help
 
-```./bruteforcer -h```
-
+```bash
+./bruteforcer -h
 ```
+
+```bash
 usage: bruteforcer [-h] [-t THREADSNUMBER] [-f FILTER] [-k KEY]
                    [-lf LENGHTFILTER] [-r] [-rc RECURSIVECODES]
                    [-rs RECURSIVESEPARATOR] [-e WORDLISTEXTENSION]
@@ -246,9 +258,13 @@ So I developed Bruteforcer to support <b>1000</b> threads!
 
 The following example will setup 200 threads:
 
-```./bruteforcer [file/url] [wordlist] -t [threads]```
+```bash
+./bruteforcer [file/url] [wordlist] -t [threads]
+```
 
-```./bruteforcer "https://www.example.com/^^" wordlist.txt -t 200```
+```bash
+./bruteforcer "https://www.example.com/^^" wordlist.txt -t 200
+```
 
 The default value is 3.
 
@@ -265,27 +281,39 @@ With Bruteforcer you can filter these response codes or response lengths.
 
     The following command will filter the 301 and 404 codes (it means that the passed codes (301 and 404) will be ignored).
 
-    ```./bruteforcer [file/url] [wordlist] -f [codes]```
+    ```bash
+    ./bruteforcer [file/url] [wordlist] -f [codes]
+    ```
 
-    ```./bruteforcer request.txt wordlist.txt -f "301,404"```
+    ```bash
+    ./bruteforcer request.txt wordlist.txt -f "301,404"
+    ```
 
 * Response Lenght Filter
 
     Maybe you don't want to filter response codes, but response lengths, here you can do this with the following commands that will filter all responses with 1122 body length:
 
-    ```./bruteforcer [file/url] [wordlist] -lf [response lenght]```
+    ```bash
+    ./bruteforcer [file/url] [wordlist] -lf [response lenght]
+    ```
     
-    ```./bruteforcer request.txt wordlist.txt -lf 1122```
+    ```bash
+    ./bruteforcer request.txt wordlist.txt -lf 1122
+    ```
     
 If you wish, you can use both filters together:
 
-```./bruteforcer request.txt wordlist.txt -f "400,429,500,404" -lf 2222```
+```bash
+./bruteforcer request.txt wordlist.txt -f "400,429,500,404" -lf 2222
+```
 
 The default value to response code filter is "404", and the length filter default value is "", it means that all the response lengths will be printed.
 
 To show all the response codes you need to pass an empty string to the filter parameter (e.g: -f ""), the command below:
 
-```./bruteforcer request.txt wordlist.txt -f ""```
+```bash
+./bruteforcer request.txt wordlist.txt -f ""
+```
 
 ### Recursive Mode
 
