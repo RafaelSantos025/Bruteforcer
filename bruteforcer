@@ -26,7 +26,7 @@ parser.add_argument("-rs", dest="recursiveSeparator", default="/", help="use an 
 parser.add_argument("-e", dest="wordlistExtension", default="", help="Add an extension to the passed wordlist. e.g: -e \".txt\".")
 parser.add_argument("-proxy", dest="proxy", default="", help="Proxy the requests. Burp Proxy example: -proxy \"localhost:8080\".")
 parser.add_argument("-sleep", dest="sleepAfter", default="0", help="Sleep after each request.")
-parser.add_argument("-debug", dest="debug", action="store_true", help="Shows errors and debug menssages.")
+parser.add_argument("-debug", dest="debug", action="store_true", help="Shows errors and debug messages.")
 args = parser.parse_args()
 
 defaultKey = args.Key
