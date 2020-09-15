@@ -23,16 +23,9 @@ cd Bruteforcer/
 chmod +x bruteforcer
 ```
 
-### Used Python Libs
-
-* requests
-* argparse
-* threading
-* os
-* sys
-* urllib3
-* time
-* queue
+```bash
+pip install -r requirements.txt
+```
 
 # How to use
 
