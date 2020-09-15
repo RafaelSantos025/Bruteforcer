@@ -262,7 +262,7 @@ Shows options available
 usage: bruteforcer [-h] [-t THREADSNUMBER] [-f FILTER] [-k KEY]
                    [-lf LENGHTFILTER] [-r] [-rc RECURSIVECODES]
                    [-rs RECURSIVESEPARATOR] [-e WORDLISTEXTENSION]
-                   [-proxy PROXY] [-sleep SLEEPAFTER]
+                   [-proxy PROXY] [-sleep SLEEPAFTER] [-debug]
                    target wordlist
 
 Bruteforcer: Advanced Header Wordlist Bruteforce Tool.
@@ -287,7 +287,8 @@ optional arguments:
                         ".txt".
   -proxy PROXY          Proxy the requests. Burp Proxy example: -proxy
                         "localhost:8080".
-  -sleep SLEEPAFTER     Sleep before each request.
+  -sleep SLEEPAFTER     Sleep after each request.
+  -debug                Shows errors and debug messages.
 ```
 
 ### Using Threads
