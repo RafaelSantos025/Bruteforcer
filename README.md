@@ -543,6 +543,20 @@ Some targets have rate-limiting or weak servers; in this cases a slow scan is ne
 ./bruteforcer request.txt wordlist.txt -t 1 -sleep 1
 ```
 
+### Debug Mode
+If Bruteforcer is not working properly, you can set the Debug option, this will print all kind of request errors.
+
+You can use the Debug Mode with the `-debug` option:
+
+```bash
+./bruteforcer [file/url] [wordlist] -debug
+```
+
+```bash
+./bruteforcer request.txt wordlist.txt -t 44 -f "" -debug
+```
+
+
 # Recommended Wordlists
 
 * [<b>Fuzzdb</b>](https://github.com/fuzzdb-project/fuzzdb)
@@ -550,15 +564,6 @@ Some targets have rate-limiting or weak servers; in this cases a slow scan is ne
 * [<b>api_wordlist</b>](https://github.com/chrislockard/api_wordlist)
 
 # Limitations
-
-### Implemented Methods
-
-```
-GET, POST, HEAD, PUT, DELETE, OPTIONS, PATCH
-```
-
-Using a different method than the listed above, the program will return an "<i>Not implemented method</i>" error.
-All the methods will be implemented in a near future.
 
 ### Replacing Methods
 For this release, it's not possible to bruteforce HTTP Methods.
