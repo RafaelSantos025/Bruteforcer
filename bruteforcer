@@ -26,6 +26,7 @@ parser.add_argument("-rs", dest="recursiveSeparator", default="/", help="use an 
 parser.add_argument("-e", dest="wordlistExtension", default="", help="Add an extension to the passed wordlist. e.g: -e \".txt\".")
 parser.add_argument("-proxy", dest="proxy", default="", help="Proxy the requests. Burp Proxy example: -proxy \"localhost:8080\".")
 parser.add_argument("-sleep", dest="sleepAfter", default="0", help="Sleep after each request.")
+parser.add_argument("-debug", dest="debug", action="store_true", help="Shows errors and debug menssages.")
 args = parser.parse_args()
 
 defaultKey = args.Key
@@ -41,6 +42,7 @@ recursiveCodes = args.recursiveCodes
 recursiveSeparator = args.recursiveSeparator
 recursive = args.recursive
 proxy = args.proxy
+debug = args.debug
 
 def checkArguments():
     if sleepAfter < 0:
@@ -193,6 +195,7 @@ def makeHeaderRequest(url, header, body, method, word, hasBody):
 
         if hasBody:
             prepped.body = body
+            prepped.headers['Content-Length'] = calculateContentLength(body)
 
         res = ScanUtils.session.send(prepped, verify=False, proxies=ScanUtils.proxy, timeout=10, allow_redirects=False)
 
@@ -201,6 +204,8 @@ def makeHeaderRequest(url, header, body, method, word, hasBody):
         if ScanUtils.isSleeping:
             time.sleep(sleepAfter)
     except Exception as error:
+        if debug:
+            print(error)
         checkProgressBar()
     except KeyboardInterrupt:
         exit(0)
@@ -215,6 +220,15 @@ def replaceKey(line, keyToReplace):
             aux += parts[i]
 
     return aux
+
+def calculateContentLength(body):
+    length = 0
+    for char in body:
+        if char == "\r":
+            continue
+        length += 1
+
+    return length
 
 def exception(menssage):
     menssage = str(menssage)
@@ -290,7 +304,7 @@ def alignHttpHeader(header):
 
         if len(auxBody.replace(" ", "")) != 0:
             hasBody = True
-            body.update({"":auxBody})
+            body = auxBody
 
         return finalHeader, body, method, path, host, hasBody
     except Exception as error:
@@ -299,14 +313,15 @@ def alignHttpHeader(header):
 def changeRequestToPassedWordlist(header, body, path, host, word, hasBody):
     try:
         finalHeader = {}
-        finalBody = {}
+        finalBody = ""
 
         for key, value in header.items():
             finalHeader.update({replaceKey(key, word): replaceKey(value, word)})
 
         if hasBody:
-            for key, value in body.items():
-                finalBody.update({replaceKey(key, word): replaceKey(value, word)})
+            finalBody = replaceKey(body, word)
+            #for key, value in body.items():
+            #    finalBody.update({replaceKey(key, word): replaceKey(value, word)})
 
         finalHost = replaceKey(host, word)
         finalPath = replaceKey(path, word)
