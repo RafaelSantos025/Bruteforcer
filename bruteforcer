@@ -77,6 +77,7 @@ class ScanUtils():
     attackType = None
     isSleeping = False
     proxy = {}
+    session = requests.Session()
 
 def checkProgressBar():
     ProgressBar.requestsMade += 1
@@ -185,61 +186,22 @@ def makeUrlRequest(url, word):
     except KeyboardInterrupt:
         exit(0)
 
-def makeHeaderRequest(url, header, method, wolrd):
+def makeHeaderRequest(url, header, body, method, word, hasBody):
     try:
-        method = method.lower()
-        if method == "post":
-            req = requests.post(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "get":
-            req = requests.get(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "put":
-            req = requests.put(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "delete":
-            req = requests.delete(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "head":
-            req = requests.head(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "options":
-            req = requests.options(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "patch":
-            req = requests.patch(url, headers=header, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        else:
-            exception("Method not implemented")
-        preparePrinting(req, wolrd)
+        req = requests.Request(method.upper(), url, headers=header)
+        prepped = req.prepare()
+
+        if hasBody:
+            prepped.body = body
+
+        res = ScanUtils.session.send(prepped, verify=False, proxies=ScanUtils.proxy, timeout=10, allow_redirects=False)
+
+        preparePrinting(res, word)
         checkProgressBar()
         if ScanUtils.isSleeping:
             time.sleep(sleepAfter)
     except Exception as error:
         checkProgressBar()
-    except KeyboardInterrupt:
-        exit(0)
-
-def makeBodyRequest(url, header, body, method, word):
-    try:
-        method = method.lower()
-        if method == "post":
-            req = requests.post(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "get":
-            req = requests.get(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "put":
-            req = requests.put(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "delete":
-            req = requests.delete(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "head":
-            req = requests.head(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "options":
-            req = requests.options(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        elif method == "patch":
-            req = requests.patch(url, headers=header, data=body, verify=False, allow_redirects=False, timeout=10, proxies=ScanUtils.proxy)
-        else:
-            exception("Method not implemented")
-
-        preparePrinting(req, word)
-        checkProgressBar()
-        if ScanUtils.isSleeping:
-            time.sleep(sleepAfter)
-    except Exception as error:
-        checkProgressBar()
-        #print("ERROR | " + word + " | Error: " + str(error))
     except KeyboardInterrupt:
         exit(0)
 
@@ -261,8 +223,8 @@ def exception(menssage):
 
 def methodIsValid(method):
     try:
-        methodList = ["get", "post", "head", "put", "delete", "options", "patch"]
-        method = method.lower()
+        methodList = ["GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", "PATCH", "TRACE", "CONNECT"]
+        method = method.upper()
 
         for mt in methodList:
             if mt == method:
@@ -353,15 +315,22 @@ def changeRequestToPassedWordlist(header, body, path, host, word, hasBody):
     except Exception as error:
         exception("alignRequest() " + str(error))
 
+def estimeTime(url, requestPerLoop):
+    try:
+        url = url.replace("^", "")
+        start_time = time.time()
+        requests.get(url, verify=False, allow_redirects=False)
+        estimatedTime = (time.time() - start_time)*requestPerLoop
+
+        return estimatedTime
+    except Exception as error:
+        exception("estimateTime() Invalid host " + str(error))
+
 def prepareAndMakeRequest(header, body, host, path, method, wolrd, hasBody):
     try:
         url = "https://" + host + path
-        if hasBody:
-            body = body['']
-            makeBodyRequest(url, header, body, method, wolrd)
-        else:
-            makeHeaderRequest(url, header, method, wolrd)
 
+        makeHeaderRequest(url, header, body, method, wolrd, hasBody)
     except Exception as error:
         exception("prepareAndMakeRequest() " + str(error))
 
