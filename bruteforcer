@@ -10,6 +10,7 @@ import sys
 import urllib3
 import time
 import queue
+import platform
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -79,6 +80,7 @@ class ScanUtils():
     attackType = None
     isSleeping = False
     proxy = {}
+    OS = ""
     session = requests.Session()
 
 def checkProgressBar():
@@ -110,9 +112,11 @@ def printProgressbar():
     sys.stdout.write("]")
     sys.stdout.write(" {")
     for i in range(0, progress):
-        sys.stdout.write("\033[92m")
+        if "linux" in ScanUtils.OS:
+            sys.stdout.write("\033[92m")
         sys.stdout.write("█")
-        sys.stdout.write("\033[0m")
+        if "linux" in ScanUtils.OS:
+            sys.stdout.write("\033[0m")
     for i in range(progress, 21):
         sys.stdout.write(" ")
     sys.stdout.write("}\r")
@@ -148,16 +152,28 @@ def printReq():
                         for i in range(len(aux), 15):
                             responseLength += " "
 
-                    if str(code).startswith("3"):
-                        print("=> \33[93m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
-                    elif str(code).startswith("4"):
-                        print("=> \33[91m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
-                    elif str(code).startswith("2"):
-                        print("=> \033[92m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
-                    elif str(code).startswith("1"):
-                        print("=> \033[94m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                    if "linux" in ScanUtils.OS:
+                        if str(code).startswith("3"):
+                            print("=> \33[93m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        elif str(code).startswith("4"):
+                            print("=> \33[91m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        elif str(code).startswith("2"):
+                            print("=> \033[92m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        elif str(code).startswith("1"):
+                            print("=> \033[94m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        else:
+                            print("=> \33[91m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
                     else:
-                        print("=> \33[91m" + code + "\033[0m" + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        if str(code).startswith("3"):
+                            print("=> " + code + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        elif str(code).startswith("4"):
+                            print("=> " + code + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        elif str(code).startswith("2"):
+                            print("=> " + code + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        elif str(code).startswith("1"):
+                            print("=> " + code + "   ::    Bytes:  " + responseLength + "  ::    " + word)
+                        else:
+                            print("=> " + code + "   ::    Bytes:  " + responseLength + "  ::    " + word)
 
                 sys.stdout.flush()
                 printProgressbar()
@@ -320,8 +336,6 @@ def changeRequestToPassedWordlist(header, body, path, host, word, hasBody):
 
         if hasBody:
             finalBody = replaceKey(body, word)
-            #for key, value in body.items():
-            #    finalBody.update({replaceKey(key, word): replaceKey(value, word)})
 
         finalHost = replaceKey(host, word)
         finalPath = replaceKey(path, word)
@@ -449,6 +463,10 @@ def getUrl():
 
     return ""
 
+def checkOS():
+    os = platform.system()
+    ScanUtils.OS = os.lower()
+
 def generateBaseWordlist():
     try:
         wordlist = []
@@ -466,6 +484,7 @@ def generateBaseWordlist():
 
 def main():
     try:
+        checkOS()
         checkArguments()
         generateBaseWordlist()
         requestPerLoop = ScanUtils.wordlistLength/numberOfThreads
