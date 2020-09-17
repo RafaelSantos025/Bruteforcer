@@ -485,11 +485,25 @@ def generateBaseWordlist():
 def main():
     try:
         checkOS()
+
+        label = '''
+      :::::::::  :::::::::  :::    ::: ::::::::::: :::::::::: :::::::::: ::::::::  :::::::::   ::::::::  :::::::::: ::::::::: 
+     :+:    :+: :+:    :+: :+:    :+:     :+:     :+:        :+:       :+:    :+: :+:    :+: :+:    :+: :+:        :+:    :+: 
+    +:+    +:+ +:+    +:+ +:+    +:+     +:+     +:+        +:+       +:+    +:+ +:+    +:+ +:+        +:+        +:+    +:+  
+   +#++:++#+  +#++:++#:  +#+    +:+     +#+     +#++:++#   :#::+::#  +#+    +:+ +#++:++#:  +#+        +#++:++#   +#++:++#:    
+  +#+    +#+ +#+    +#+ +#+    +#+     +#+     +#+        +#+       +#+    +#+ +#+    +#+ +#+        +#+        +#+    +#+    
+ #+#    #+# #+#    #+# #+#    #+#     #+#     #+#        #+#       #+#    #+# #+#    #+# #+#    #+# #+#        #+#    #+#     
+#########  ###    ###  ########      ###     ########## ###        ########  ###    ###  ########  ########## ###    ### '''
+
+        if "linux" in ScanUtils.OS:
+            label = "\033[92m" + label + "\033[0m"
+
+        print(label + "\n\n")
+
         checkArguments()
         generateBaseWordlist()
         requestPerLoop = ScanUtils.wordlistLength/numberOfThreads
 
-        print("[*] Starting Bruteforcer [*]\n")
         print("[*] WordList length: " + str(ScanUtils.wordlistLength))
         print("[*] Threads: " + str(numberOfThreads))
         print("[*] Filter set to do not print [" + str(filter) + "] codes")
