@@ -7,7 +7,7 @@ It's a <b>Free</b> option to [Burp Suite Professional](https://portswigger.net/b
 
 * Bruteforce running on terminal:
 
-![Bruteforce](https://i.ibb.co/R0bxtLR/running-Bruteforcer.png)
+![Bruteforce](https://i.ibb.co/CMbtSrv/niceRun.png)
 
 # Setup
 
