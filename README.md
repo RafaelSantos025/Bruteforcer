@@ -20,12 +20,18 @@ cd Bruteforcer/
 ```
 
 ```bash
-chmod +x bruteforcer
-```
-
-```bash
 pip install -r requirements.txt
 ```
+
+* Linux:
+
+    ```bash
+    chmod +x bruteforcer
+    ```
+
+* Windows:
+
+    To Run, use the following command: `python bruteforcer`
 
 # How to use
 
