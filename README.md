@@ -497,6 +497,27 @@ administrator.php/email.php
    ...   
 ```
 
+### Set Protocol
+You can set the protocol to use in the passed request file with the `-proto` option (http or https).
+
+```bash
+./bruteforcer [file/url] [wordlist] -proto [protocol]
+```
+
+* Using http://
+
+```bash
+./bruteforcer request.txt wordlist.txt -proto "http"
+```
+
+* Using https://
+
+```bash
+./bruteforcer request.txt wordlist.txt -proto "https"
+```
+
+The default protocol to use is `https`.
+
 ### Set Proxy
 Proxying the connection is almost essential when attacking Web Sites. Bruteforcer can do this via the `-proxy` option. See the [Burp Suite Integration](https://github.com/RafaelSantos025/Bruteforcer/blob/master/README.md#burp-suite-proxy-integration) topic to make burp intercept all the traffic.
 
