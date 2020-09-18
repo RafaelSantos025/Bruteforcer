@@ -27,6 +27,7 @@ parser.add_argument("-rs", dest="recursiveSeparator", default="/", help="use an 
 parser.add_argument("-e", dest="wordlistExtension", default="", help="Add an extension to the passed wordlist. e.g: -e \".txt\".")
 parser.add_argument("-proxy", dest="proxy", default="", help="Proxy the requests. Burp Proxy example: -proxy \"localhost:8080\".")
 parser.add_argument("-sleep", dest="sleepAfter", default="0", help="Sleep after each request.")
+parser.add_argument("-proto", dest="proto", default="https", help="Set protocol.")
 parser.add_argument("-debug", dest="debug", action="store_true", help="Shows errors and debug menssages.")
 args = parser.parse_args()
 
@@ -43,6 +44,7 @@ recursiveCodes = args.recursiveCodes
 recursiveSeparator = args.recursiveSeparator
 recursive = args.recursive
 proxy = args.proxy
+proto = args.proto
 debug = args.debug
 
 def checkArguments():
@@ -344,20 +346,9 @@ def changeRequestToPassedWordlist(header, body, path, host, word, hasBody):
     except Exception as error:
         exception("alignRequest() " + str(error))
 
-def estimeTime(url, requestPerLoop):
-    try:
-        url = url.replace("^", "")
-        start_time = time.time()
-        requests.get(url, verify=False, allow_redirects=False)
-        estimatedTime = (time.time() - start_time)*requestPerLoop
-
-        return estimatedTime
-    except Exception as error:
-        exception("estimateTime() Invalid host " + str(error))
-
 def prepareAndMakeRequest(header, body, host, path, method, wolrd, hasBody):
     try:
-        url = "https://" + host + path
+        url =  proto + "://" + host + path
 
         makeHeaderRequest(url, header, body, method, wolrd, hasBody)
     except Exception as error:
@@ -507,13 +498,13 @@ def main():
         print("[*] WordList length: " + str(ScanUtils.wordlistLength))
         print("[*] Threads: " + str(numberOfThreads))
         print("[*] Filter set to do not print [" + str(filter) + "] codes")
-        print("[*] Requests per loop: " + str(int(requestPerLoop)))
+        print("[*] Requests per thread: " + str(int(requestPerLoop)))
         if recursive:
             print("[*] Will recursively scan: [" + recursiveCodes + "] codes")
 
         if os.path.isfile(headerName):
             url = getUrl()
-            print("[*] Target: https://" + url)
+            print("[*] Target: " + proto + "://" + url)
             print("[*] Starting header attack\n")
             ScanUtils.attackType = headerAttack
         else:
